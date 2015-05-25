@@ -64,7 +64,16 @@
 <li>WB Collect WEB API.zip</li>
 </ul>
 
-<p>To install the API you need to add an IIS application under the IIS Web Site where your Web Bomic application is already installed.</p>
+<p>To install the API</p>
+
+<ol>
+<li>Unzip the contents of the API zip file to a directory.</li>
+<li>Add an IIS application pool that uses version 4.x of the .NET framework.</li>
+<li>Add an IIS application under the IIS Web Site where your Web Bomic application is already installed.<br>
+</li>
+<li>Select the application pool (added in point 2 above) as the application pool to use for the newly added IIS application.</li>
+<li>Point the 'Physical Path' of the newly added IIS application to the directory that contains the un-zipped contents.</li>
+</ol>
 
 <h3>
 <a id="installing-the-app" class="anchor" href="#installing-the-app" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing the App</h3>
