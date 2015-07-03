@@ -1,0 +1,38 @@
+<div layout="column" layout-fill flex data-ng-controller="EventsController" data-ng-init="find()">
+    <nav class="position:relative">
+        <md-button id="btnAddEvent" class="md-fab md-fab-bottom-right md-accent" aria-label="Add Event" ng-click="createEvent()">
+            <ng-md-icon icon="add" size="34" style="margin-bottom: 20px; margin-right: 10px;"></ng-md-icon>
+        </md-button>
+    </nav>
+
+    <md-toolbar class="demo-toolbar md-default-theme">
+        <div class="md-toolbar-tools">
+            <div layout="row" layout-align="start center">
+                <span class="ng-binding">Events</span>
+            </div>
+        </div>
+    </md-toolbar>
+    <md-whiteframe class="md-whiteframe-z1 md-padding" layout="column">
+        <md-content>
+            <section>
+                <md-list>
+                    <md-item ng-repeat="wbevent in wbevents ">
+                        <md-item-content ng-click="loadEvent(wbevent.EventId)" >
+                            <div class="md-tile-left">
+                                <img clng-src="modules/events/img/notes.jpg" class="face circular">
+                            </div>
+                            <div class="md-tile-content">
+                                <h3 ng-hide="wbevent.Error">WB Number: {{wbevent.WBNumber}}</h3>
+                                <h3 ng-show="wbevent.Error" class="eventError">WB Number: {{wbevent.WBNumber + ' : ' + wbevent.ErrorText}}</h3>
+                                <h4>Event Date: {{wbevent.EventDate}}</h4>
+                                <p>
+                                    {{wbevent.Notes.substr(0,50)}}
+                                </p>
+                            </div>
+                        </md-item-content>
+                    </md-item>
+                </md-list>
+            </section>
+        </md-content>
+    </md-whiteframe>
+</div>

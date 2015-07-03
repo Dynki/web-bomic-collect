@@ -1,0 +1,140 @@
+.login-container{
+    background-color:#002C57;
+    height:100%;
+    min-height:100%;
+}
+
+html, body{height:100%; margin:0;padding:0}
+
+.container-fluid{
+    height:100%;
+    display:table;
+    width: 100%;
+    padding: 0;
+}
+
+.row-fluid {height: 100%; display:table-cell; vertical-align: middle;}
+
+.centering {
+    float:none;
+    margin:0 auto;
+}
+.welcome-banner{
+    width:160px;
+    color: #EBEEF2;
+    font-family: 'Muli', sans-serif;
+    margin-bottom:0px;
+    padding-bottom:0px;
+}
+
+.welcome-banner > h1{
+    margin:0px!important;
+    margin-top: 30px!important;
+}
+
+.welcome-message{
+    width:210px;
+    color: #EBEEF2;
+    font-family: 'Muli', sans-serif;
+    font-size:20px;
+}
+
+.welcome-message{
+    margin-top:5px!important;
+    margin-bottom:0px;
+}
+
+
+.col-center{
+    margin:0 auto;
+}
+
+.username{
+    margin-top: 20px;
+    width:180px;
+}
+
+.pin-entry{
+    width:180px;
+}
+
+.pin-labels{
+    width:140px;
+    padding-bottom:15px;
+}
+
+.pin-label{
+    width:30px;
+    min-height: 30px;
+    background: transparent;
+    border:solid;
+    border-color: grey;
+    border-top:none;
+    border-left:none;
+    border-right: none;
+    border-bottom-width:2px;
+    color: #9FB0C0;
+    text-align:center;
+}
+
+.login-message{
+    width:150px;
+    color: #E45752;
+    font-family: 'Muli', sans-serif;
+    font-size:20px;
+    min-height:30px;
+    margin-top:5px;
+}
+
+.username-input{
+    border-radius:0px;
+    background-color: #CBD3D6;
+}
+
+.btn-pin .btn-primary{
+    margin:3px;
+    width: 50px;
+    height: 45px;
+    border: solid;
+    border-width: 1px;
+    font: arial;
+    font-weight: 500;
+    border-color: #9FB0C0;
+    background-color: #20496E;
+    color: #9FB0C0;
+    border-radius:0px!important;
+}
+
+.btn-pin .btn-primary:hover{
+    background-color: #337AB7;
+    color: white;
+}
+
+.btn-pin .btn-danger{
+    margin:3px;
+    width: 50px;
+    height: 45px;
+    border: solid;
+    border-width: 1px;
+    font: arial;
+    font-weight: 500;
+    border-color: #9FB0C0;
+    background-color: #20496E;
+    color: #9FB0C0;
+    border-radius:0px!important;
+}
+
+.btn-pin .btn-blank{
+    margin:3px;
+    width: 50px;
+    height: 45px;
+    border: solid;
+    border-width: 1px;
+    font: arial;
+    font-weight: 500;
+    border-color: #9FB0C0;
+    background-color: #20496E;
+    color: #9FB0C0;
+    border-radius:0px!important;
+}
+

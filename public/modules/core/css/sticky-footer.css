@@ -1,0 +1,67 @@
+﻿/* Sticky footer styles*/
+/*-------------------------------------------------- */
+/*html {*/
+  /*position: relative;*/
+  /*min-height: 100%;*/
+/*}*/
+/*body {*/
+  /* Margin bottom by footer height */
+  /*margin-bottom: 60px;*/
+/*}*/
+/*.footer {*/
+  /*position: absolute;*/
+  /*bottom: 0;*/
+  /*width: 100%;*/
+  /* Set the fixed height of the footer here */
+  /*height: 30px;*/
+  /*background-color: #f5f5f5;*/
+/*}*/
+
+/*.real-full-width {*/
+    /*width: 100%!important;*/
+/*}*/
+
+/*.full-width {*/
+    /*width: 120px!important;*/
+/*}*/
+
+/*.sync-button {*/
+    /*position: absolute;*/
+    /*margin-left: 10px;*/
+    /*margin-right: 10px;*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+    /* Set the fixed height of the footer here */
+    /*height: 60px;*/
+/*}*/
+
+
+/*.no-left-margin{*/
+    /*margin-left:0px;*/
+    /*padding-left:0px;*/
+/*}*/
+
+/*.form-group{*/
+    /*margin-bottom: 5px;*/
+/*}*/
+
+/*.input-group{*/
+    /*margin-bottom: 0px;*/
+/*}*/
+
+/*.left-indent{*/
+    /*margin-left:5px;*/
+/*}*/
+
+/* Custom page CSS*/
+/*-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+/*.container {*/
+  /*width: auto;*/
+  /*max-width: 680px;*/
+  /*padding: 0 15px;*/
+/*}*/
+/*.container .text-muted {*/
+  /*margin: 20px 0;*/
+/*}*/

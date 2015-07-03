@@ -1,0 +1,52 @@
+<div ng-controller="SecurityLoginController">
+    <md-progress-linear md-mode="indeterminate" ng-show="loggingIn"></md-progress-linear>
+    <div layout-sm="column" layout-gt-sm="row" layout-align="center center" layout-fill flex>
+        <div layout="column" layout-align="center center" flex>
+            <h1 class="welcome-banner">Welcome</h1>
+            <div class="welcome-banner">
+                Enter Credentials
+            </div>
+            <md-input-container>
+                <label>Username</label>
+                <input id="inputUserName" ng-model="username">
+            </md-input-container>
+        </div>
+        <div layout="column" layout-align="center center" flex layout-fill>
+            <div hide-sm>
+                <br/>
+                <br/>
+                <br/>
+            </div>
+            <div layout="column" layout-align="center center">
+                <div layout="row" class="md-padding pin-labels col-center">
+                    <input class="pin-label" ng-model="passcode1" ng-disabled="true" readonly />
+                    <input class="pin-label" ng-model="passcode2" ng-disabled="true" readonly/>
+                    <input class="pin-label" ng-model="passcode3" ng-disabled="true" readonly/>
+                    <input class="pin-label" ng-model="passcode4" ng-disabled="true" readonly/>
+                </div>
+                <div layout="row">
+                    <md-button id="btnAdd1" class="md-raised md-primary btn-pin" ng-click="add(1, true)">1</md-button>
+                    <md-button id="btnAdd2" class="md-raised md-primary btn-pin" ng-click="add(2, true)">2</md-button>
+                    <md-button id="btnAdd3" class="md-raised md-primary btn-pin" ng-click="add(3, true)">3</md-button>
+                </div>
+                <div layout="row">
+                    <md-button id="btnAdd4" class="md-raised md-primary btn-pin" ng-click="add(4, true)">4</md-button>
+                    <md-button id="btnAdd5" class="md-raised md-primary btn-pin" ng-click="add(5, true)">5</md-button>
+                    <md-button id="btnAdd6" class="md-raised md-primary btn-pin" ng-click="add(6, true)">6</md-button>
+                </div>
+                <div layout="row">
+                    <md-button id="btnAdd7" class="md-raised md-primary btn-pin" ng-click="add(7, true)">7</md-button>
+                    <md-button id="btnAdd8" class="md-raised md-primary btn-pin" ng-click="add(8, true)">8</md-button>
+                    <md-button id="btnAdd9" class="md-raised md-primary btn-pin" ng-click="add(9, true)">9</md-button>
+                </div>
+                <div layout="row">
+                    <md-button class="md-raised md-primary btn-pin" ng-disabled="true"></md-button>
+                    <md-button id="btnAdd0" class="md-raised md-primary btn-pin" ng-click="add(0, true)">0</md-button>
+                    <md-button id="btnDelete" class="md-raised md-primary btn-pin" ng-click="delete()">
+                        <i class="fa fa-arrow-left"></i>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

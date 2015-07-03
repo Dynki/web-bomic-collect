@@ -1,0 +1,58 @@
+<md-dialog aria-label="Settings" style="min-width: 600px; min-height:450px;">
+    <md-content layout="column" class="md-padding" layout-align="center center">
+        <div class="md-headline">Clear Data</div>
+        <div layout-sm="column" layout-gt-sm="row" layout-align="center center" layout-fill flex>
+            <div layout="column" layout-align="center center" flex>
+                <div class="welcome-banner">
+                    Enter Credentials
+                </div>
+                <md-input-container>
+                    <label>Username</label>
+                    <input id="inputUserName" ng-model="username">
+                </md-input-container>
+            </div>
+            <div layout="column" layout-align="center center" flex layout-fill>
+                <div layout="column" layout-align="center center">
+                    <div layout="row" class="md-padding pin-labels col-center">
+                        <input class="pin-label" ng-model="passcode1" ng-disabled="true" readonly />
+                        <input class="pin-label" ng-model="passcode2" ng-disabled="true" readonly/>
+                        <input class="pin-label" ng-model="passcode3" ng-disabled="true" readonly/>
+                        <input class="pin-label" ng-model="passcode4" ng-disabled="true" readonly/>
+                    </div>
+                    <div layout="row">
+                        <md-button id="btnAdd1" class="md-raised md-primary btn-pin" ng-click="add(1, false)">1</md-button>
+                        <md-button id="btnAdd2" class="md-raised md-primary btn-pin" ng-click="add(2, false)">2</md-button>
+                        <md-button id="btnAdd3" class="md-raised md-primary btn-pin" ng-click="add(3, false)">3</md-button>
+                    </div>
+                    <div layout="row">
+                        <md-button id="btnAdd4" class="md-raised md-primary btn-pin" ng-click="add(4, false)">4</md-button>
+                        <md-button id="btnAdd5" class="md-raised md-primary btn-pin" ng-click="add(5, false)">5</md-button>
+                        <md-button id="btnAdd6" class="md-raised md-primary btn-pin" ng-click="add(6, false)">6</md-button>
+                    </div>
+                    <div layout="row">
+                        <md-button id="btnAdd7" class="md-raised md-primary btn-pin" ng-click="add(7, false)">7</md-button>
+                        <md-button id="btnAdd8" class="md-raised md-primary btn-pin" ng-click="add(8, false)">8</md-button>
+                        <md-button id="btnAdd9" class="md-raised md-primary btn-pin" ng-click="add(9, false)">9</md-button>
+                    </div>
+                    <div layout="row">
+                        <md-button class="md-raised md-primary btn-pin" ng-disabled="true"></md-button>
+                        <md-button id="btnAdd0" class="md-raised md-primary btn-pin" ng-click="add(0, false)">0</md-button>
+                        <md-button id="btnDelete" class="md-raised md-primary btn-pin" ng-click="delete()">
+                            <i class="fa fa-arrow-left"></i>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+            <br/>
+        </div>
+        <div class="md-actions">
+            <md-button ng-click="save()" class="md-raised md-primary" ng-disabled="!localLogin">
+                Clear Data
+            </md-button>
+            <span flex></span>
+            <md-button ng-click="hide()" class="md-raised md-warn">
+                Cancel
+            </md-button>
+        </div>
+    </md-content>
+</md-dialog>

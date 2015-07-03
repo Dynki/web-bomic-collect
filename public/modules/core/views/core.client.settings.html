@@ -1,0 +1,21 @@
+<md-dialog aria-label="Settings" style="min-width: 400px;">
+    <md-content layout="column" class="md-padding" layout-align="center center">
+        <div class="md-headline">Settings</div>
+        <!--<md-input-container>-->
+            <!--<label>API Location</label>-->
+            <!--<input ng-model="ApiLocation">-->
+        <!--</md-input-container>-->
+        <lx-text-field label="API Location" style="min-width: 300px;">
+            <input type="text" ng-model="ApiLocation" required>
+        </lx-text-field>
+        <div class="md-actions">
+            <md-button ng-click="save()" class="md-primary">
+                Save
+            </md-button>
+            <span flex></span>
+            <md-button ng-click="hide()" class="md-warn">
+                Cancel
+            </md-button>
+        </div>
+    </md-content>
+</md-dialog>
