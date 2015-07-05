@@ -1586,7 +1586,7 @@ angular.module('general-lookups').factory('StaticLookup', [
                   var item = {
                       _id: 'EventType' + resultItem.etype1,
                       table: 'EventTypes',
-                      key: resultItem.etype1,
+                      keyvalue: resultItem.etype1,
                       text: resultItem.name
                     };
                   updatedDocs.push(item);
@@ -1608,7 +1608,7 @@ angular.module('general-lookups').factory('StaticLookup', [
                 var item = {
                     _id: 'EventType' + resultItem.etype1,
                     table: 'EventTypes',
-                    key: resultItem.etype1,
+                    keyvalue: resultItem.etype1,
                     text: resultItem.name
                   };
                 updatedDocs.push(item);
@@ -1635,7 +1635,7 @@ angular.module('general-lookups').factory('StaticLookup', [
             // Re-populate the EventTypes documents from the results from the local store.
             angular.forEach(results.rows, function (resultItem) {
               var arrayItem = {
-                  id: resultItem.key,
+                  id: resultItem.doc.keyvalue,
                   text: resultItem.doc.text
                 };
               resultArray.push(arrayItem);
@@ -1676,7 +1676,7 @@ angular.module('general-lookups').factory('StaticLookup', [
                   var item = {
                       _id: 'EventStatus' + resultItem.estatus1,
                       table: 'EventStatus',
-                      key: resultItem.estatus1,
+                      keyvalue: resultItem.estatus1,
                       text: resultItem.name
                     };
                   updatedDocs.push(item);
@@ -1698,7 +1698,7 @@ angular.module('general-lookups').factory('StaticLookup', [
                 var item = {
                     _id: 'EventStatus' + resultItem.estatus1,
                     table: 'EventStatus',
-                    key: resultItem.estatus1,
+                    keyvalue: resultItem.estatus1,
                     text: resultItem.name
                   };
                 updatedDocs.push(item);
@@ -1725,7 +1725,7 @@ angular.module('general-lookups').factory('StaticLookup', [
             // Re-populate the EventTypes documents from the results from the local store.
             angular.forEach(results.rows, function (resultItem) {
               var arrayItem = {
-                  id: resultItem.key,
+                  id: resultItem.doc.keyvalue,
                   text: resultItem.doc.text
                 };
               resultArray.push(arrayItem);
@@ -1766,7 +1766,7 @@ angular.module('general-lookups').factory('StaticLookup', [
                   var item = {
                       _id: 'EventLocation' + resultItem.evloc1,
                       table: 'EventLocations',
-                      key: resultItem.evloc1,
+                      keyvalue: resultItem.evloc1,
                       text: resultItem.name
                     };
                   updatedDocs.push(item);
@@ -1788,7 +1788,7 @@ angular.module('general-lookups').factory('StaticLookup', [
                 var item = {
                     _id: 'EventLocation' + resultItem.evloc1,
                     table: 'EventLocations',
-                    key: resultItem.evloc1,
+                    keyvalue: resultItem.evloc1,
                     text: resultItem.name
                   };
                 updatedDocs.push(item);
@@ -1815,7 +1815,7 @@ angular.module('general-lookups').factory('StaticLookup', [
             // Re-populate the EventTypes documents from the results from the local store.
             angular.forEach(results.rows, function (resultItem) {
               var arrayItem = {
-                  id: resultItem.key,
+                  id: resultItem.doc.keyvalue,
                   text: resultItem.doc.text
                 };
               resultArray.push(arrayItem);
@@ -1856,7 +1856,7 @@ angular.module('general-lookups').factory('StaticLookup', [
                   var item = {
                       _id: 'Keyworker' + resultItem.keyw1,
                       table: 'Keyworkers',
-                      key: resultItem.keyw1,
+                      keyvalue: resultItem.keyw1,
                       text: resultItem.name
                     };
                   updatedDocs.push(item);
@@ -1878,7 +1878,7 @@ angular.module('general-lookups').factory('StaticLookup', [
                 var item = {
                     _id: 'Keyworker' + resultItem.keyw1,
                     table: 'Keyworkers',
-                    key: resultItem.keyw1,
+                    keyvalue: resultItem.keyw1,
                     text: resultItem.name
                   };
                 updatedDocs.push(item);
@@ -1905,7 +1905,7 @@ angular.module('general-lookups').factory('StaticLookup', [
             // Re-populate the keyworkers array from the results from the local store.
             angular.forEach(results.rows, function (resultItem) {
               var arrayItem = {
-                  id: resultItem.key,
+                  id: resultItem.doc.keyvalue,
                   text: resultItem.doc.text
                 };
               resultArray.push(arrayItem);
