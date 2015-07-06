@@ -4,11 +4,13 @@
             <div layout="column" layout-align="start center">
                 <span class="ng-binding">Event Details</span>
                 <span id="showcode" class="showcode">
-                    <md-button id="btnCreate" ng-if="currentState('create')" class="md-fab md-primary event-button" aria-label="" ng-click="create()" ng-disabled="eventForm.$invalid || formErrors">
-                        <ng-md-icon icon="save" size="34" style="margin-bottom: 20px; margin-right: 10px;"></ng-md-icon>
+                    <md-button id="btnCreate" ng-if="currentState('create')" class="md-fab md-primary md-fab-top-right event-button" aria-label="" ng-click="create()" ng-disabled="eventForm.$invalid || formErrors">
+                        <!--<ng-md-icon icon="save" size="34" style="margin-bottom: 20px; margin-right: 10px;"></ng-md-icon>-->
+                        <md-icon md-svg-src="lib/font-awesome-svg-png/white/svg/floppy-o.svg"></md-icon>
                     </md-button>
-                    <md-button id="btnUpdate" ng-if="currentState('edit')" class="md-fab md-primary event-button" aria-label="" ng-click="update()" ng-disabled="eventForm.$invalid || formError">
-                        <ng-md-icon icon="save" size="34" style="margin-bottom: 20px; margin-right: 10px;"></ng-md-icon>
+                    <md-button id="btnUpdate" ng-if="currentState('edit')" class="md-fab md-primary  md-fab-top-right event-button" aria-label="" ng-click="update()" ng-disabled="eventForm.$invalid || formError">
+                        <!--<ng-md-icon icon="save" size="34" style="margin-bottom: 20px; margin-right: 10px;"></ng-md-icon>-->
+                         <md-icon md-svg-src="lib/font-awesome-svg-png/white/svg/floppy-o.svg"></md-icon>
                     </md-button>
                 </span>
             </div>

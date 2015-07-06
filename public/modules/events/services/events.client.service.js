@@ -163,7 +163,7 @@ angular.module('events').service('Events', ['$q', 'Login', 'WBEvent', '$rootScop
                                     Notes : item.Notes,
                                     Duration : item.Duration,
                                     hash : Login.key,
-                                    uploaded : true,
+                                    uploaded : false,
                                     User: item.User
                                 };
         
@@ -175,8 +175,8 @@ angular.module('events').service('Events', ['$q', 'Login', 'WBEvent', '$rootScop
                                     .success(function(data, status, headers, config) {
                                             
                                         // Event was uploaded successfully so update the 'uploaded' flag to true.
-                                        eventItem.uploaded =  true;
-                                        updateItem(eventItem).$promise.then(function(){
+                                        item.uploaded =  true;
+                                        updateItem(item).$promise.then(function(){
                                             // Broadcast an event that is picked up the the sync controller. This tell the controller to 
                                             // add 1 to the total of events successfully synchronised. 
                                             $rootScope.$broadcast('sync-event-success');
