@@ -1,6 +1,8 @@
 # web-bomic-collect
 Web Bomic Events Collection
 
+Allows collection of Web Bomic client events via IPad or Android devices, that can be synchronised to any Web Bomic application.
+
 ## Prerequisites
 Make sure you have installed all of the following prerequisites on your development machine:
 * Node.js - [Download & Install Node.js](http://www.nodejs.org/download/) and the npm package manager. If you encounter any problems, you can also use this [GitHub Gist](https://gist.github.com/isaacs/579814) to install Node.js.
