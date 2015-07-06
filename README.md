@@ -1,4 +1,4 @@
-# web-bomic-collect
+# Web Bomic Collect
 Web Bomic Events Collection
 
 Allows collection of Web Bomic client events via IPad or Android devices, that can be synchronised to any Web Bomic application.
