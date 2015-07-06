@@ -1371,7 +1371,7 @@ angular.module('events').service('Events', [
                   // Post the event to Web Bomic via the API.
                   $http.post(returnedUrl + '/Events', eventItem).success(function (data, status, headers, config) {
                     // Event was uploaded successfully so update the 'uploaded' flag to true.
-                    item.uploaded = true;
+                    eventItem.uploaded = true;
                     updateItem(eventItem).$promise.then(function () {
                       // Broadcast an event that is picked up the the sync controller. This tell the controller to 
                       // add 1 to the total of events successfully synchronised. 
@@ -1382,7 +1382,7 @@ angular.module('events').service('Events', [
                     item.Error = true;
                     item.ErrorText = data.Message;
                     item.uploaded = false;
-                    updateItem(eventItem).$promise.then(function () {
+                    updateItem(item).$promise.then(function () {
                       $rootScope.$broadcast('sync-event-fail');
                     });
                   });
