@@ -1047,7 +1047,7 @@ angular.module('events').controller('EventsController', [
     $scope.loadEvents = function () {
       $scope.find();
     };
-    // Listen to broadcast of syn-complete event. This trigger the reloading of the events in the list.
+    // Listen to broadcast of sync-complete event. This trigger the reloading of the events in the list.
     // This should then refresh this list to only show events that have failed to be synchronised, if any.
     $scope.$on('sync-complete', function (event, args) {
       $scope.loadEvents();
@@ -1098,6 +1098,8 @@ angular.module('events').controller('EventsController', [
       var timeTo = $scope.timeOpts[Utils.indexOfObject($scope.timeOpts, event.End.text)];
       event.Duration = (timeTo.id - timeFrom.id) * 5;
       event.IsDirty = true;
+      event.Error = false;
+      event.ErrorText = '';
       Events.$update(event).$promise.then(function () {
         $location.path('events');
       }, function (errorResponse) {
@@ -1246,40 +1248,12 @@ angular.module('events').service('Events', [
   '$http',
   'settings',
   'pouchDB',
-  function ($q, Login, WBEvent, $rootScope, $http, settings, pouchDB) {
+  '$timeout',
+  function ($q, Login, WBEvent, $rootScope, $http, settings, pouchDB, $timeout) {
+    var self = this;
     // Open the database.
     var db = pouchDB('WBCollect', { adapter: 'websql' });
     var wbEvents = [];
-    // Internal function to update an item in local storage, get called from one place the $sync method below.
-    var updateItem = function (wbEvent) {
-      var deferred = $q.defer();
-      // Convert the event object passed in into a string of JSON.            
-      var eventStr = JSON.stringify(wbEvent);
-      // Encrypt the data in the string.
-      var encObj = Login.encrypt(eventStr);
-      // Encrypted object passed back needs to be converted to a string before it can be strored.
-      var encStr = encObj.toString();
-      // Construct the document item (unique key for this document) from the event Id passed in. 
-      var docId = 'Item' + wbEvent.EventId;
-      // Get the record you wish to updated. Yuo have to do this in order to get the doc._rev property which is needed 
-      // when updating the document via db.put.
-      db.get(docId).then(function (doc) {
-        return db.put({
-          _id: docId,
-          _rev: doc._rev,
-          EventId: wbEvent.EventId,
-          table: 'Events',
-          payload: encStr,
-          uploaded: wbEvent.uploaded
-        });
-      }).then(function () {
-        // Tell the promise we are done.
-        deferred.resolve();
-      }).catch(function (err) {
-        console.log(err);
-      });
-      return { $promise: deferred.promise };
-    };
     // Return a list of all events that have not yet been uplaoded.
     this.$query = function () {
       var deferred = $q.defer();
@@ -1308,6 +1282,76 @@ angular.module('events').service('Events', [
         });
         // Tell the promise we are done and pass in the list of events to return.    
         deferred.resolve(eventsToReturn);
+      });
+      return { $promise: deferred.promise };
+    };
+    // Save a NEW event.
+    this.$save = function (wbEvent) {
+      var deferred = $q.defer();
+      // Set some properties on the event that the user could not enter.
+      // Store the users hash id on the event. This is important as we will only retreive events where the event hash id matches the hash id of the logged in user.
+      wbEvent.hash = Login.hash;
+      wbEvent.EventDate = moment(wbEvent.EventDate).format('LL');
+      wbEvent.Error = false;
+      wbEvent.ErrorText = '';
+      // Convert the event object to a string of JSON. 
+      var eventStr = JSON.stringify(wbEvent);
+      // Encrypt the event string. 
+      var encObj = Login.encrypt(eventStr);
+      var encStr = encObj.toString();
+      // Get a list of all events (all events have an id that starts with 'Item' e.g. Item1, Item2 etc...).
+      // The endKey 'Item/uffff' is a wildcard search that will return all documents which have an id that starts with 'Item'.
+      // We are doing this so we can get the next event id to use as the document id.    
+      db.allDocs({
+        include_docs: false,
+        startkey: 'Item',
+        endkey: 'Item\uffff'
+      }).then(function (results) {
+        // Save the event to the device storage. 
+        var eventId = results.rows.length + 1;
+        db.put({
+          _id: 'Item' + eventId,
+          EventId: eventId,
+          table: 'Events',
+          payload: encStr,
+          uploaded: false
+        }).then(function () {
+          deferred.resolve(wbEvent);
+        }).catch(function (err) {
+          console.log(err);
+        });
+      });
+      return { $promise: deferred.promise };
+    };
+    // Update an EXISTING event.
+    this.$update = function (wbEvent) {
+      var deferred = $q.defer();
+      var uploadedStatus = wbEvent.uploaded;
+      // Format the date for storeage.
+      wbEvent.EventDate = moment(wbEvent.EventDate).format('LL');
+      // Convert the event object to a string of JSON. 
+      var eventStr = JSON.stringify(wbEvent);
+      // Encrypt the event string. 
+      var encObj = Login.encrypt(eventStr);
+      var encStr = encObj.toString();
+      // Get the event from the document store. We need to do this in order to get the doc._rev property 
+      // otherwise the db.put operation will think it is a new document and give us a key conflict.    
+      var itemId = 'Item' + wbEvent.EventId;
+      db.get(itemId).then(function (doc) {
+        return db.put({
+          _id: itemId,
+          _rev: doc._rev,
+          EventId: wbEvent.EventId,
+          table: 'Events',
+          payload: encStr,
+          uploaded: uploadedStatus
+        });
+      }).then(function (response) {
+        // Tell the promise we are done.
+        deferred.resolve();
+      }).catch(function (err) {
+        console.log(err);
+        deferred.resolve();
       });
       return { $promise: deferred.promise };
     };
@@ -1363,7 +1407,7 @@ angular.module('events').service('Events', [
                     Notes: item.Notes,
                     Duration: item.Duration,
                     hash: Login.key,
-                    uploaded: true,
+                    uploaded: false,
                     User: item.User
                   };
                 // Get the API location from the stored settings on the device.
@@ -1371,8 +1415,8 @@ angular.module('events').service('Events', [
                   // Post the event to Web Bomic via the API.
                   $http.post(returnedUrl + '/Events', eventItem).success(function (data, status, headers, config) {
                     // Event was uploaded successfully so update the 'uploaded' flag to true.
-                    eventItem.uploaded = true;
-                    updateItem(eventItem).$promise.then(function () {
+                    item.uploaded = true;
+                    self.$update(item).$promise.then(function () {
                       // Broadcast an event that is picked up the the sync controller. This tell the controller to 
                       // add 1 to the total of events successfully synchronised. 
                       $rootScope.$broadcast('sync-event-success');
@@ -1382,7 +1426,10 @@ angular.module('events').service('Events', [
                     item.Error = true;
                     item.ErrorText = data.Message;
                     item.uploaded = false;
-                    updateItem(item).$promise.then(function () {
+                    if (item.EventId === undefined) {
+                      item.EventId = evItem.doc.EventId;
+                    }
+                    self.$update(item).$promise.then(function () {
                       $rootScope.$broadcast('sync-event-fail');
                     });
                   });
@@ -1409,77 +1456,6 @@ angular.module('events').service('Events', [
         event.uploaded = result.uploaded;
         // Tell the promise we are done and pass in the event to return.
         deferred.resolve(event);
-      });
-      return { $promise: deferred.promise };
-    };
-    // Save a NEW event.
-    this.$save = function (wbEvent) {
-      var deferred = $q.defer();
-      // Set some properties on the event that the user could not enter.
-      // Store the users hash id on the event. This is important as we will only retreive events where the event hash id matches the hash id of the logged in user.
-      wbEvent.hash = Login.hash;
-      wbEvent.EventDate = moment(wbEvent.EventDate).format('LL');
-      wbEvent.Error = false;
-      wbEvent.ErrorText = '';
-      // Convert the event object to a string of JSON. 
-      var eventStr = JSON.stringify(wbEvent);
-      // Encrypt the event string. 
-      var encObj = Login.encrypt(eventStr);
-      var encStr = encObj.toString();
-      // Get a list of all events (all events have an id that starts with 'Item' e.g. Item1, Item2 etc...).
-      // The endKey 'Item/uffff' is a wildcard search that will return all documents which have an id that starts with 'Item'.
-      // We are doing this so we can get the next event id to use as the document id.    
-      db.allDocs({
-        include_docs: false,
-        startkey: 'Item',
-        endkey: 'Item\uffff'
-      }).then(function (results) {
-        // Save the event to the device storage. 
-        var eventId = results.rows.length + 1;
-        db.put({
-          _id: 'Item' + eventId,
-          EventId: eventId,
-          table: 'Events',
-          payload: encStr,
-          uploaded: false
-        }).then(function () {
-          deferred.resolve(wbEvent);
-        }).catch(function (err) {
-          console.log(err);
-        });
-      });
-      return { $promise: deferred.promise };
-    };
-    // Update an EXISTING event.
-    this.$update = function (wbEvent) {
-      var deferred = $q.defer();
-      // Format the date for storeage.
-      wbEvent.EventDate = moment(wbEvent.EventDate).format('LL');
-      // Reset hte error text.
-      wbEvent.Error = false;
-      wbEvent.ErrorText = '';
-      // Convert the event object to a string of JSON. 
-      var eventStr = JSON.stringify(wbEvent);
-      // Encrypt the event string. 
-      var encObj = Login.encrypt(eventStr);
-      var encStr = encObj.toString();
-      // Get the event from the document store. We need to do this in order to get the doc._rev property 
-      // otherwise the db.put operation will think it is a new document and give us a key conflict.    
-      var itemId = 'Item' + wbEvent.EventId;
-      db.get(itemId).then(function (doc) {
-        return db.put({
-          _id: itemId,
-          _rev: doc._rev,
-          EventId: wbEvent.EventId,
-          table: 'Events',
-          payload: encStr,
-          uploaded: false
-        });
-      }).then(function (response) {
-        // Tell the promise we are done.
-        deferred.resolve();
-      }).catch(function (err) {
-        console.log(err);
       });
       return { $promise: deferred.promise };
     };

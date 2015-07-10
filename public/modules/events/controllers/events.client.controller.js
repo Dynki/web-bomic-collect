@@ -76,7 +76,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			$scope.find();
 		};
 		
-		// Listen to broadcast of syn-complete event. This trigger the reloading of the events in the list.
+		// Listen to broadcast of sync-complete event. This trigger the reloading of the events in the list.
 		// This should then refresh this list to only show events that have failed to be synchronised, if any.
 		$scope.$on('sync-complete', function(event, args) {
 			$scope.loadEvents();
@@ -142,6 +142,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			event.Duration = (timeTo.id - timeFrom.id) * 5;
 
 			event.IsDirty = true;
+			event.Error = false;
+			event.ErrorText = '';
 
 			Events.$update(event).$promise.then(function() {
 				$location.path('events');
