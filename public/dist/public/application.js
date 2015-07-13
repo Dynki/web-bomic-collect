@@ -1416,6 +1416,9 @@ angular.module('events').service('Events', [
                   $http.post(returnedUrl + '/Events', eventItem).success(function (data, status, headers, config) {
                     // Event was uploaded successfully so update the 'uploaded' flag to true.
                     item.uploaded = true;
+                    if (item.EventId === undefined) {
+                      item.EventId = evItem.doc.EventId;
+                    }
                     self.$update(item).$promise.then(function () {
                       // Broadcast an event that is picked up the the sync controller. This tell the controller to 
                       // add 1 to the total of events successfully synchronised. 
