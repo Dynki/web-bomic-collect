@@ -27,7 +27,7 @@ angular.module("modules/core/views/core.client.sync.html", []).run(["$templateCa
 
 angular.module("modules/core/views/core.client.version.view.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("modules/core/views/core.client.version.view.html",
-    "<md-dialog aria-label=Version style=\"min-width: 300px\"><md-content layout=column class=md-padding layout-align=\"center center\"><div class=md-headline>Version</div><md-input-container><label>1.1.2</label></md-input-container><div class=md-actions><md-button ng-click=hide() class=md-primary>Close</md-button></div></md-content></md-dialog>");
+    "<md-dialog aria-label=Version style=\"min-width: 300px\"><md-content layout=column class=md-padding layout-align=\"center center\"><div class=md-headline>Version</div><md-input-container><label>1.1.3</label></md-input-container><div class=md-actions><md-button ng-click=hide() class=md-primary>Close</md-button></div></md-content></md-dialog>");
 }]);
 
 angular.module("modules/core/views/date-picker-dialog.html", []).run(["$templateCache", function($templateCache) {
