@@ -1475,6 +1475,7 @@ angular.module('general-lookups').factory('StaticLookup', [
     var db = pouchDB('WBCollect', { adapter: 'websql' });
     // Load any static data that is defined on the client side into arrays attached to the lookupData object.
     var lookupData = {};
+    lookupData.eventSubTypes = [];
     lookupData.eventTypes = [
       {
         id: 1,
@@ -1620,6 +1621,96 @@ angular.module('general-lookups').factory('StaticLookup', [
               resultArray.push(arrayItem);
             });
             lookupData.eventTypes = resultArray.sort(function (a, b) {
+              var textA = a.text.toUpperCase();
+              var textB = b.text.toUpperCase();
+              return textA < textB ? -1 : textA > textB ? 1 : 0;
+            });
+          });
+        });
+        // Load any $resource services and query their data to load a static list into an array attached to the lookupData object.
+        var eventSubTypesService = $resource(apiLocation + '/EventSubTypes', {}, {
+            query: {
+              method: 'GET',
+              params: {},
+              isArray: true
+            }
+          });
+        eventSubTypesService.query().$promise.then(function (apiResults) {
+          var resultArray = [];
+          // Delete all old lookup values, by getting them all and then marking them as _deleted: true.                                        
+          db.allDocs({
+            include_docs: true,
+            startkey: 'EventSubType',
+            endkey: 'EventSubType\uffff'
+          }).then(function (results) {
+            if (results.rows.length > 1) {
+              // Add the _deleted flag to all returned items.    
+              angular.forEach(results.rows, function (resultItem) {
+                resultItem._deleted = true;
+              });
+              // Bulk update all the items marked as deleted by calling bulkDocs and passing in the updated documents.
+              db.bulkDocs(results.rows).then(function (result) {
+                // Re-populate the EventTypes documents from the results from the API.
+                angular.forEach(apiResults, function (resultItem) {
+                  var updatedDocs = [];
+                  var item = {
+                      _id: 'EventSubType' + resultItem.etypesub,
+                      table: 'EventSubTypes',
+                      keyvalue: resultItem.etypesub,
+                      text: resultItem.name
+                    };
+                  updatedDocs.push(item);
+                  db.bulkDocs(updatedDocs);
+                  var arrayItem = {
+                      id: resultItem.etypesub,
+                      text: resultItem.name
+                    };
+                  resultArray.push(arrayItem);
+                });
+                lookupData.eventSubTypes = resultArray;
+              }).catch(function (err) {
+                console.log('general-lookup.service: failed to delete event sub types');
+              });
+            } else {
+              // Re-populate the EventTypes documents from the results from the API.
+              angular.forEach(apiResults, function (resultItem) {
+                var updatedDocs = [];
+                var item = {
+                    _id: 'EventSubType' + resultItem.etypesub,
+                    table: 'EventSubTypes',
+                    keyvalue: resultItem.etypesub,
+                    text: resultItem.name
+                  };
+                updatedDocs.push(item);
+                db.bulkDocs(updatedDocs);
+                var arrayItem = {
+                    id: resultItem.etypesub,
+                    text: resultItem.name
+                  };
+                resultArray.push(arrayItem);
+              });
+              lookupData.eventSubTypes = resultArray;
+            }
+          }).catch(function (err) {
+            console.log('general-lookup.service: failed to query event sub types');
+          });
+        }, function () {
+          // Get all values from local storeage as querying the API has failed.
+          db.allDocs({
+            include_docs: true,
+            startkey: 'EventSubType',
+            endkey: 'EventSubType\uffff'
+          }).then(function (results) {
+            var resultArray = [];
+            // Re-populate the EventTypes documents from the results from the local store.
+            angular.forEach(results.rows, function (resultItem) {
+              var arrayItem = {
+                  id: resultItem.doc.keyvalue,
+                  text: resultItem.doc.text
+                };
+              resultArray.push(arrayItem);
+            });
+            lookupData.eventSubTypes = resultArray.sort(function (a, b) {
               var textA = a.text.toUpperCase();
               var textB = b.text.toUpperCase();
               return textA < textB ? -1 : textA > textB ? 1 : 0;

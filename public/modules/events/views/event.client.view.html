@@ -50,6 +50,20 @@
                 </div>
                 <div layout-gt-sm="row" layout-sm="column">
                     <div layout="column" flex>
+                        <label class="select-label">Event Type</label>
+                        <select class="md-select-replica" ng-model="wbevent.EventType" ng-options="option.text for option in lookupData.eventTypes" required>
+                            <option value="" ng-if="!foo"></option>
+                        </select>
+                    </div>
+                    <div layout="column" flex>
+                        <label class="select-label">Event Sub Type</label>
+                        <select class="md-select-replica" ng-model="wbevent.EventSubType" ng-options="option.text for option in lookupData.eventSubTypes" required>
+                            <option value="" ng-if="!foo"></option>
+                        </select>
+                    </div>
+                </div>
+                <div layout-gt-sm="row" layout-sm="column">
+                    <div layout="column" flex>
                         <label class="select-label">Keyworker</label>
                         <select class="md-select-replica" ng-model="wbevent.Keyworker" ng-options="keyworker.text for keyworker in lookupData.keyworkers" required>
                             <option value="" ng-if="!foo"></option>
